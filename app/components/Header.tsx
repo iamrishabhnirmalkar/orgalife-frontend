@@ -7,6 +7,8 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import AnnouncementBar from './custom-ui/AnnouncementBar';
+import announcementConfig from 'data/announcementData';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -25,18 +27,33 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
+    <>
+      <AnnouncementBar
+        texts={announcementConfig.texts}
+        backgroundColor={announcementConfig.backgroundColor}
+        textColor={announcementConfig.textColor}
+        speed={announcementConfig.speed}
+        direction={announcementConfig.direction}
+        pauseOnHover={announcementConfig.pauseOnHover}
+        fontSize={announcementConfig.fontSize}
+        fontWeight={announcementConfig.fontWeight}
+        padding={announcementConfig.padding}
+        itemSpacing={announcementConfig.itemSpacing}
       />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+
+      <header className="header">
+        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+          <strong>{shop.name}</strong>
+        </NavLink>
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </header>
+    </>
   );
 }
 

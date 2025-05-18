@@ -1,6 +1,8 @@
 import {Suspense} from 'react';
 import {Await, NavLink} from '@remix-run/react';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
+import {footerData} from 'data/footerData';
+import CustomFooter from './custom-ui/CutomFooter';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -14,21 +16,24 @@ export function Footer({
   publicStoreDomain,
 }: FooterProps) {
   return (
-    <Suspense>
-      <Await resolve={footerPromise}>
-        {(footer) => (
-          <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
-          </footer>
-        )}
-      </Await>
-    </Suspense>
+    <>
+      <Suspense>
+        <Await resolve={footerPromise}>
+          {(footer) => (
+            <footer className="footer">
+              {footer?.menu && header.shop.primaryDomain?.url && (
+                <FooterMenu
+                  menu={footer.menu}
+                  primaryDomainUrl={header.shop.primaryDomain.url}
+                  publicStoreDomain={publicStoreDomain}
+                />
+              )}
+            </footer>
+          )}
+        </Await>
+      </Suspense>
+      <CustomFooter {...footerData} />
+    </>
   );
 }
 
